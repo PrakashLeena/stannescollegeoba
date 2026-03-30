@@ -111,7 +111,7 @@ export default function Hero() {
               {slides[current].desc}
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="#membership" className="btn-gold">
+              <a href="#become-member" className="btn-gold">
                 Join Our Community
               </a>
               <a href="#about" className="btn-navy">
