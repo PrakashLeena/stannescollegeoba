@@ -1,5 +1,34 @@
 const bcrypt = require('bcryptjs')
 const { MongoClient } = require('mongodb')
+const fs = require('fs')
+const path = require('path')
+
+function loadDotEnv(filePath) {
+  try {
+    const content = fs.readFileSync(filePath, 'utf8')
+    for (const line of content.split(/\r?\n/)) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+      const idx = trimmed.indexOf('=')
+      if (idx === -1) continue
+      const key = trimmed.slice(0, idx).trim()
+      let value = trimmed.slice(idx + 1).trim()
+
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1)
+      }
+
+      if (process.env[key] === undefined) {
+        process.env[key] = value
+      }
+    }
+  } catch {
+    // ignore
+  }
+}
+
+loadDotEnv(path.join(process.cwd(), '.env.local'))
+loadDotEnv(path.join(process.cwd(), '.env'))
 
 async function main() {
   const uri = process.env.MONGODB_URI
