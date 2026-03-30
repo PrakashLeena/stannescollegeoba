@@ -1,29 +1,7 @@
 'use client'
 import { useEffect, useRef } from 'react'
-
-const projects = [
-  {
-    img: '',
-    category: 'Education',
-    title: 'Annual Scholarship Programme',
-    desc: 'For over 30 years, we have provided scholarships to students, offering monthly allowances to cover educational expenses. We recently expanded to include additional recipients.',
-    tag: 'Ongoing',
-  },
-  {
-    img: '',
-    category: 'Healthcare',
-    title: 'LRH Medical Support Project',
-    desc: 'In response to the 2022 healthcare crisis, our members raised over AUD 8,000 to provide critical medical consumables to Lady Ridgeway Hospital, the largest free paediatric hospital in Sri Lanka.',
-    tag: 'Completed',
-  },
-  {
-    img: '',
-    category: 'Arts & Culture',
-    title: 'English Drama Society Support',
-    desc: 'We supported the English Drama Society to launch a comprehensive Drama Calendar, including weekly workshops for students from Grade 6 to College Prefects.',
-    tag: 'Ongoing',
-  },
-]
+import Link from 'next/link'
+import { communityProjects } from '@/lib/content'
 
 export default function Projects() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -66,7 +44,7 @@ export default function Projects() {
 
         {/* Project cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, idx) => (
+          {communityProjects.map((project, idx) => (
             <div
               key={idx}
               ref={(el) => { cardRefs.current[idx] = el }}
@@ -103,12 +81,12 @@ export default function Projects() {
                   {project.title}
                 </h3>
                 <p className="font-lato text-gray-500 text-sm leading-relaxed mb-5">{project.desc}</p>
-                <a
-                  href="#projects"
+                <Link
+                  href={`/projects/${project.slug}`}
                   className="font-lato text-yellow-700 font-bold text-sm uppercase tracking-widest border-b-2 border-yellow-500 hover:text-[#1a2456] hover:border-[#1a2456] transition-colors duration-200"
                 >
                   Read More →
-                </a>
+                </Link>
               </div>
             </div>
           ))}

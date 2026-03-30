@@ -1,51 +1,11 @@
 'use client'
 import { useEffect, useRef } from 'react'
 import { Calendar, MapPin, Clock } from 'lucide-react'
+import Link from 'next/link'
+import { communityEvents } from '@/lib/content'
 
-const sports = [
-  {
-    img: '',
-    sport: 'Rugby',
-    title: 'Touch Footy Tournament',
-    desc: 'RCOBA fields two rugby teams — Open and Over 40s — in the annual Sri Lanka Schools touch footy tournament.',
-  },
-  {
-    img: '',
-    sport: 'Tennis',
-    title: 'Tennis Social Evenings',
-    desc: 'Our tennis community is growing fast. Join us for weekly social evenings every Friday from 6PM.',
-  },
-  {
-    img: '',
-    sport: 'Gala',
-    title: 'Annual Gala Dinner',
-    desc: 'A highlight of the year — an elegant evening celebrating our alumni community with cultural performances and fine dining.',
-  },
-]
-
-const upcomingEvents = [
-  {
-    date: '15',
-    month: 'NOV',
-    title: 'Annual Gala Dinner 2025',
-    location: 'Doltone House, Sydney',
-    time: '7:00 PM — 11:00 PM',
-  },
-  {
-    date: '08',
-    month: 'DEC',
-    title: 'Touch Footy Tournament',
-    location: 'Parramatta Park, NSW',
-    time: '9:00 AM — 5:00 PM',
-  },
-  {
-    date: '20',
-    month: 'DEC',
-    title: 'Christmas Social Evening',
-    location: 'Colombo Social Club, Sydney',
-    time: '6:30 PM — 10:00 PM',
-  },
-]
+const sports = communityEvents.filter((e) => e.kind === 'Sport')
+const upcomingEvents = communityEvents.filter((e) => e.kind === 'Upcoming')
 
 export default function Events() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -85,7 +45,11 @@ export default function Events() {
         {/* Sports Cards */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {sports.map((item, idx) => (
-            <div key={idx} className="anim-hidden card-hover group overflow-hidden shadow-md bg-white">
+            <Link
+              key={item.slug}
+              href={`/events/${item.slug}`}
+              className="anim-hidden card-hover group overflow-hidden shadow-md bg-white block"
+            >
               <div className="relative h-52 overflow-hidden">
                 {item.img ? (
                   <img
@@ -107,7 +71,7 @@ export default function Events() {
                 <h3 className="font-playfair text-xl font-bold text-[#1a2456] mb-2">{item.title}</h3>
                 <p className="font-lato text-gray-500 text-sm leading-relaxed">{item.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -141,12 +105,12 @@ export default function Events() {
                     </span>
                   </div>
                 </div>
-                <a
-                  href="#events"
+                <Link
+                  href={`/events/${event.slug}`}
                   className="shrink-0 text-yellow-400 border border-yellow-400 font-lato text-xs font-bold uppercase tracking-widest px-5 py-2 hover:bg-yellow-400 hover:text-[#1a2456] transition-colors duration-200"
                 >
                   Details
-                </a>
+                </Link>
               </div>
             ))}
           </div>

@@ -1,33 +1,8 @@
 'use client'
 import { useEffect, useRef } from 'react'
 import { Clock, Tag } from 'lucide-react'
-
-const newsItems = [
-  {
-    img: '',
-    category: 'Community',
-    title: 'RCOBA Annual General Meeting 2025 — Key Highlights',
-    date: 'October 12, 2025',
-    excerpt:
-      'Members gathered for the Annual General Meeting to review the year\'s achievements, elect new committee members, and set the agenda for 2026.',
-  },
-  {
-    img: '',
-    category: 'Projects',
-    title: 'Scholarship Programme Expands — Four New Recipients',
-    date: 'September 5, 2025',
-    excerpt:
-      'We are proud to announce the expansion of our annual scholarship programme, adding four new recipients committed for the next four years.',
-  },
-  {
-    img: '',
-    category: 'Events',
-    title: 'Gala Dinner 2025 — A Night to Remember',
-    date: 'August 20, 2025',
-    excerpt:
-      'Over 200 alumni and guests attended the annual Gala Dinner, celebrating our community with cultural performances, fine dining, and live music.',
-  },
-]
+import Link from 'next/link'
+import { latestNews } from '@/lib/content'
 
 export default function News() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -65,7 +40,7 @@ export default function News() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {newsItems.map((item, idx) => (
+          {latestNews.map((item, idx) => (
             <div
               key={idx}
               ref={(el) => { cardRefs.current[idx] = el }}
@@ -100,12 +75,12 @@ export default function News() {
                 <p className="font-lato text-gray-500 text-sm leading-relaxed mb-5">
                   {item.excerpt}
                 </p>
-                <a
-                  href="#news"
+                <Link
+                  href={`/news/${item.slug}`}
                   className="font-lato text-yellow-700 font-bold text-xs uppercase tracking-widest border-b-2 border-yellow-500 hover:text-[#1a2456] hover:border-[#1a2456] transition-colors duration-200"
                 >
                   Read More →
-                </a>
+                </Link>
               </div>
             </div>
           ))}
