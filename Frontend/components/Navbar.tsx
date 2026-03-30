@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 const navItems = [
   { label: 'Home', href: '#home' },
@@ -36,6 +37,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileDropdown, setMobileDropdown] = useState<string | null>(null)
+  const pathname = usePathname()
+
+  const resolveHref = (href: string) => {
+    if (!href.startsWith('#')) return href
+    if (pathname === '/') return href
+    return `/${href}`
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60)
@@ -69,7 +77,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 flex flex-nowrap items-center justify-between gap-3">
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3 group min-w-0 flex-1">
+          <a href={resolveHref('#home')} className="flex items-center gap-3 group min-w-0 flex-1">
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-yellow-400 overflow-hidden group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/src/images/logo-removebg.png"
@@ -103,7 +111,7 @@ export default function Navbar() {
                     {item.children.map((child) => (
                       <a
                         key={child.label}
-                        href={child.href}
+                        href={resolveHref(child.href)}
                         className="block px-5 py-3 text-[#1a2456] font-lato text-sm font-medium hover:bg-yellow-50 hover:text-yellow-700 border-b border-gray-100 last:border-0 transition-colors duration-200"
                       >
                         {child.label}
@@ -112,7 +120,7 @@ export default function Navbar() {
                   </div>
                 </div>
               ) : (
-                <a key={item.label} href={item.href} className="nav-link px-3 py-5 block">
+                <a key={item.label} href={resolveHref(item.href)} className="nav-link px-3 py-5 block">
                   {item.label}
                 </a>
               )
@@ -157,7 +165,7 @@ export default function Navbar() {
                       {item.children.map((child) => (
                         <a
                           key={child.label}
-                          href={child.href}
+                          href={resolveHref(child.href)}
                           className="block text-yellow-300 font-lato text-sm py-2"
                           onClick={() => setMobileOpen(false)}
                         >
@@ -170,7 +178,7 @@ export default function Navbar() {
               ) : (
                 <a
                   key={item.label}
-                  href={item.href}
+                  href={resolveHref(item.href)}
                   className="block text-white font-lato font-medium text-sm uppercase tracking-wide py-3 border-b border-white/10"
                   onClick={() => setMobileOpen(false)}
                 >
