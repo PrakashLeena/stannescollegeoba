@@ -5,6 +5,10 @@ import FirebaseAnalytics from '@/components/FirebaseAnalytics'
 export const metadata: Metadata = {
   title: "ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION IN NSW & ACT",
   description: "ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION IN NSW & ACT — a vibrant alumni community reconnecting, reminiscing, and forging new bonds while serving the community.",
+  icons: {
+    icon: '/src/images/logo-removebg.png',
+    apple: '/src/images/logo-removebg.png',
+  },
 }
 
 export default function RootLayout({
