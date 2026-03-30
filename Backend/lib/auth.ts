@@ -6,6 +6,19 @@ import clientPromise, { getDb } from '@/lib/mongodb'
 import bcrypt from 'bcryptjs'
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
+  logger: {
+    error(code, metadata) {
+      console.error('[next-auth][error]', code, metadata)
+    },
+    warn(code) {
+      console.warn('[next-auth][warn]', code)
+    },
+    debug(code, metadata) {
+      console.debug('[next-auth][debug]', code, metadata)
+    },
+  },
   adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: 'jwt',

@@ -16,10 +16,18 @@ function createClientPromise() {
     return Promise.reject(new Error('Missing MONGODB_URI'))
   }
 
-  // IMPORTANT: Do not call client.connect() at import/build time.
-  // The MongoDB driver will establish a connection lazily when the first operation runs.
+  const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build'
+
   const client = new MongoClient(uri, options)
-  return Promise.resolve(client)
+
+  // IMPORTANT:
+  // - During `next build` (Vercel build phase), do NOT attempt any network access.
+  // - At runtime (Vercel Serverless Function), connect so NextAuth adapter can use the client reliably.
+  if (isBuildPhase) {
+    return Promise.resolve(client)
+  }
+
+  return client.connect().then(() => client)
 }
 
 if (process.env.NODE_ENV === 'development') {
