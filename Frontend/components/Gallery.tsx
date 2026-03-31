@@ -1,19 +1,18 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import { X, ZoomIn } from 'lucide-react'
+import { getApiBaseUrl } from '@/lib/apiBase'
 
-const photos = [
-  { src: '', label: 'Gala Dinner 2024' },
-  { src: '', label: 'Reunion 2024' },
-  { src: '', label: 'Touch Footy Tournament' },
-  { src: '', label: 'Tennis Evening' },
-  { src: '', label: 'AGM 2024' },
-  { src: '', label: 'Community Event' },
-]
+type ApiGalleryItem = {
+  _id: string
+  title: string
+  imageUrl: string
+}
 
 export default function Gallery() {
   const [lightbox, setLightbox] = useState<number | null>(null)
   const sectionRef = useRef<HTMLDivElement>(null)
+  const [photos, setPhotos] = useState<ApiGalleryItem[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,6 +29,20 @@ export default function Gallery() {
     )
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const base = getApiBaseUrl()
+    if (!base) return
+
+    fetch(`${base}/api/public/gallery`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.ok && Array.isArray(j.items)) {
+          setPhotos(j.items)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -62,14 +75,14 @@ export default function Gallery() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {photos.map((photo, idx) => (
             <div
-              key={idx}
+              key={photo._id || idx}
               className="anim-hidden relative group overflow-hidden cursor-pointer aspect-[4/3]"
               onClick={() => setLightbox(idx)}
             >
-              {photo.src ? (
+              {photo.imageUrl ? (
                 <img
-                  src={photo.src}
-                  alt={photo.label}
+                  src={photo.imageUrl}
+                  alt={photo.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               ) : (
@@ -78,7 +91,7 @@ export default function Gallery() {
               <div className="absolute inset-0 bg-[#1a2456]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col gap-2">
                 <ZoomIn size={28} className="text-white" />
                 <span className="font-lato text-white text-sm font-bold uppercase tracking-widest">
-                  {photo.label}
+                  {photo.title}
                 </span>
               </div>
             </div>
@@ -106,10 +119,10 @@ export default function Gallery() {
             className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-4xl hover:text-yellow-400 font-thin transition-colors px-4 py-2"
             onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + photos.length) % photos.length) }}
           >‹</button>
-          {photos[lightbox].src ? (
+          {photos[lightbox].imageUrl ? (
             <img
-              src={photos[lightbox].src}
-              alt={photos[lightbox].label}
+              src={photos[lightbox].imageUrl}
+              alt={photos[lightbox].title}
               className="max-h-[85vh] max-w-[90vw] object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
@@ -124,7 +137,7 @@ export default function Gallery() {
             onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % photos.length) }}
           >›</button>
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white font-lato text-sm tracking-widest uppercase">
-            {photos[lightbox].label} &nbsp;—&nbsp; {lightbox + 1} / {photos.length}
+            {photos[lightbox].title} &nbsp;—&nbsp; {lightbox + 1} / {photos.length}
           </div>
         </div>
       )}

@@ -1,14 +1,23 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Calendar, MapPin, Clock } from 'lucide-react'
 import Link from 'next/link'
-import { communityEvents } from '@/lib/content'
+import { getApiBaseUrl } from '@/lib/apiBase'
 
-const sports = communityEvents.filter((e) => e.kind === 'Sport')
-const upcomingEvents = communityEvents.filter((e) => e.kind === 'Upcoming')
+type ApiEvent = {
+  _id: string
+  slug: string
+  title: string
+  description?: string | null
+  location?: string | null
+  startDate?: string | null
+  endDate?: string | null
+  imageUrl?: string | null
+}
 
 export default function Events() {
   const sectionRef = useRef<HTMLDivElement>(null)
+  const [items, setItems] = useState<ApiEvent[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,6 +34,20 @@ export default function Events() {
     )
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const base = getApiBaseUrl()
+    if (!base) return
+
+    fetch(`${base}/api/public/events`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.ok && Array.isArray(j.items)) {
+          setItems(j.items)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   return (
@@ -44,17 +67,17 @@ export default function Events() {
 
         {/* Sports Cards */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {sports.map((item, idx) => (
+          {items.slice(0, 6).map((item, idx) => (
             <Link
-              key={item.slug}
+              key={item._id || item.slug || idx}
               href={`/events/${item.slug}`}
               className="anim-hidden card-hover group overflow-hidden shadow-md bg-white block"
             >
               <div className="relative h-52 overflow-hidden">
-                {item.img ? (
+                {item.imageUrl ? (
                   <img
-                    src={item.img}
-                    alt={item.sport}
+                    src={item.imageUrl}
+                    alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 ) : (
@@ -63,13 +86,13 @@ export default function Events() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1a2456]/80 to-transparent" />
                 <div className="absolute bottom-4 left-4">
                   <span className="bg-yellow-600 text-white text-xs font-lato font-bold uppercase tracking-widest px-3 py-1">
-                    {item.sport}
+                    Event
                   </span>
                 </div>
               </div>
               <div className="p-6">
                 <h3 className="font-playfair text-xl font-bold text-[#1a2456] mb-2">{item.title}</h3>
-                <p className="font-lato text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                <p className="font-lato text-gray-500 text-sm leading-relaxed">{item.description || ''}</p>
               </div>
             </Link>
           ))}
@@ -81,15 +104,21 @@ export default function Events() {
             Upcoming Events
           </h3>
           <div className="space-y-4">
-            {upcomingEvents.map((event, idx) => (
+            {items.slice(0, 6).map((event, idx) => (
               <div
-                key={idx}
+                key={event._id || event.slug || idx}
                 className="anim-hidden bg-white/5 hover:bg-white/10 transition-colors duration-300 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-5"
               >
                 {/* Date badge */}
                 <div className="bg-yellow-600 text-white text-center px-5 py-3 shrink-0 min-w-[70px]">
-                  <div className="font-playfair text-3xl font-bold">{event.date}</div>
-                  <div className="font-lato text-xs font-bold tracking-widest uppercase">{event.month}</div>
+                  <div className="font-playfair text-3xl font-bold">
+                    {event.startDate ? new Date(event.startDate).getDate() : ''}
+                  </div>
+                  <div className="font-lato text-xs font-bold tracking-widest uppercase">
+                    {event.startDate
+                      ? new Date(event.startDate).toLocaleString(undefined, { month: 'short' }).toUpperCase()
+                      : ''}
+                  </div>
                 </div>
                 {/* Info */}
                 <div className="flex-1">
@@ -97,11 +126,11 @@ export default function Events() {
                   <div className="flex flex-wrap gap-4">
                     <span className="flex items-center gap-1 text-gray-300 text-sm font-lato">
                       <MapPin size={13} className="text-yellow-400" />
-                      {event.location}
+                      {event.location || ''}
                     </span>
                     <span className="flex items-center gap-1 text-gray-300 text-sm font-lato">
                       <Clock size={13} className="text-yellow-400" />
-                      {event.time}
+                      {event.startDate ? new Date(event.startDate).toLocaleTimeString() : ''}
                     </span>
                   </div>
                 </div>

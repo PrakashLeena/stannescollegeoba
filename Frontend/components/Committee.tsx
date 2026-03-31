@@ -1,36 +1,19 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Linkedin } from 'lucide-react'
+import { getApiBaseUrl } from '@/lib/apiBase'
 
-const committee = [
-  {
-    name: 'Pradeep Jayawardena',
-    role: 'President',
-    img: '',
-    year: "Class of '98",
-  },
-  {
-    name: 'Rohan de Silva',
-    role: 'Vice President',
-    img: '',
-    year: "Class of '01",
-  },
-  {
-    name: 'Nilantha Perera',
-    role: 'Secretary',
-    img: '',
-    year: "Class of '03",
-  },
-  {
-    name: 'Chatura Bandara',
-    role: 'Treasurer',
-    img: '',
-    year: "Class of '00",
-  },
-]
+type ApiCommitteeMember = {
+  _id: string
+  name: string
+  role: string
+  imageUrl?: string | null
+  bio?: string | null
+}
 
 export default function Committee() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [committee, setCommittee] = useState<ApiCommitteeMember[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,6 +26,20 @@ export default function Committee() {
     )
     cardRefs.current.forEach((ref) => { if (ref) observer.observe(ref) })
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const base = getApiBaseUrl()
+    if (!base) return
+
+    fetch(`${base}/api/public/committee`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.ok && Array.isArray(j.items)) {
+          setCommittee(j.items)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   return (
@@ -64,15 +61,15 @@ export default function Committee() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {committee.map((member, idx) => (
             <div
-              key={idx}
+              key={member._id || `${member.name}-${idx}`}
               ref={(el) => { cardRefs.current[idx] = el }}
               className="anim-hidden card-hover text-center group"
               style={{ transitionDelay: `${idx * 100}ms` }}
             >
               <div className="relative mb-5 mx-auto w-36 h-36">
-                {member.img ? (
+                {member.imageUrl ? (
                   <img
-                    src={member.img}
+                    src={member.imageUrl}
                     alt={member.name}
                     className="w-full h-full object-cover rounded-full border-4 border-gray-100 group-hover:border-yellow-400 transition-colors duration-300"
                   />
@@ -88,7 +85,7 @@ export default function Committee() {
               </div>
               <h3 className="font-playfair font-bold text-[#1a2456] text-lg mb-1">{member.name}</h3>
               <div className="text-yellow-600 font-lato text-sm font-bold uppercase tracking-widest mb-1">{member.role}</div>
-              <div className="text-gray-400 font-lato text-xs">{member.year}</div>
+              <div className="text-gray-400 font-lato text-xs">{member.bio || ''}</div>
             </div>
           ))}
         </div>

@@ -1,10 +1,19 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { communityProjects } from '@/lib/content'
+import { getApiBaseUrl } from '@/lib/apiBase'
+
+type ApiProject = {
+  _id: string
+  slug: string
+  title: string
+  summary?: string | null
+  imageUrl?: string | null
+}
 
 export default function Projects() {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [projects, setProjects] = useState<ApiProject[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -21,6 +30,20 @@ export default function Projects() {
       if (ref) observer.observe(ref)
     })
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const base = getApiBaseUrl()
+    if (!base) return
+
+    fetch(`${base}/api/public/projects`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.ok && Array.isArray(j.items)) {
+          setProjects(j.items)
+        }
+      })
+      .catch(() => {})
   }, [])
 
   return (
@@ -44,17 +67,17 @@ export default function Projects() {
 
         {/* Project cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {communityProjects.map((project, idx) => (
+          {projects.map((project, idx) => (
             <div
-              key={idx}
+              key={project._id || project.slug || idx}
               ref={(el) => { cardRefs.current[idx] = el }}
               className="anim-hidden card-hover bg-white shadow-md overflow-hidden group"
               style={{ transitionDelay: `${idx * 150}ms` }}
             >
               <div className="img-overlay h-52 overflow-hidden">
-                {project.img ? (
+                {project.imageUrl ? (
                   <img
-                    src={project.img}
+                    src={project.imageUrl}
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
@@ -63,16 +86,7 @@ export default function Projects() {
                 )}
                 <div className="absolute top-4 left-4 z-10">
                   <span className="bg-yellow-600 text-white text-xs font-lato font-bold tracking-widest uppercase px-3 py-1">
-                    {project.category}
-                  </span>
-                </div>
-                <div className="absolute top-4 right-4 z-10">
-                  <span className={`text-xs font-lato font-bold tracking-widest uppercase px-3 py-1 ${
-                    project.tag === 'Ongoing'
-                      ? 'bg-green-500 text-white'
-                      : 'bg-gray-600 text-white'
-                  }`}>
-                    {project.tag}
+                    Project
                   </span>
                 </div>
               </div>
@@ -80,7 +94,7 @@ export default function Projects() {
                 <h3 className="font-playfair text-xl font-bold text-[#1a2456] mb-3 leading-snug">
                   {project.title}
                 </h3>
-                <p className="font-lato text-gray-500 text-sm leading-relaxed mb-5">{project.desc}</p>
+                <p className="font-lato text-gray-500 text-sm leading-relaxed mb-5">{project.summary || ''}</p>
                 <Link
                   href={`/projects/${project.slug}`}
                   className="font-lato text-yellow-700 font-bold text-sm uppercase tracking-widest border-b-2 border-yellow-500 hover:text-[#1a2456] hover:border-[#1a2456] transition-colors duration-200"
