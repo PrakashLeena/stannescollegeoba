@@ -37,7 +37,7 @@ export function NewsClient() {
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [publishedAt, setPublishedAt] = useState('')
-  const [isPublished, setIsPublished] = useState(false)
+  const [isPublished, setIsPublished] = useState(true)
   const [imageFile, setImageFile] = useState<File | null>(null)
 
   const canSubmit = useMemo(() => title.trim() && slug.trim() && !saving, [title, slug, saving])
@@ -69,7 +69,7 @@ export function NewsClient() {
     setContent('')
     setImageUrl('')
     setPublishedAt('')
-    setIsPublished(false)
+    setIsPublished(true)
     setImageFile(null)
   }
 

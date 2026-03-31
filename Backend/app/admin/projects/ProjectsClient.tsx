@@ -33,7 +33,7 @@ export function ProjectsClient() {
   const [summary, setSummary] = useState('')
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  const [isPublished, setIsPublished] = useState(false)
+  const [isPublished, setIsPublished] = useState(true)
   const [imageFile, setImageFile] = useState<File | null>(null)
 
   const canSubmit = useMemo(() => title.trim() && slug.trim() && !saving, [title, slug, saving])
@@ -64,7 +64,7 @@ export function ProjectsClient() {
     setSummary('')
     setContent('')
     setImageUrl('')
-    setIsPublished(false)
+    setIsPublished(true)
     setImageFile(null)
   }
 
