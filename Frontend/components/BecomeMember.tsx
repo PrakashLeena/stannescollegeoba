@@ -58,7 +58,7 @@ export default function BecomeMember() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="bg-white/70 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
+          <div className="bg-white/90 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
             <div className="font-playfair text-xl font-bold text-[#1a2456] mb-3">Why Join?</div>
             <ul className="space-y-2">
               {[
@@ -72,7 +72,7 @@ export default function BecomeMember() {
             </ul>
           </div>
 
-          <div className="bg-white/70 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
+          <div className="bg-white/90 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
             <div className="font-playfair text-xl font-bold text-[#1a2456] mb-3">How to Become a Member</div>
             <ol className="space-y-2 list-decimal pl-4">
               {[
