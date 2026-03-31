@@ -72,7 +72,7 @@ export default function About() {
                 { num: '1997', label: 'Founded' },
                 { num: '20+', label: 'Events/Year' },
               ].map((stat) => (
-                <div key={stat.label} className="text-center p-4 bg-gray-50 border-t-4 border-yellow-500">
+                <div key={stat.label} className="text-center p-4 bg-transparent border-t-4 border-yellow-500">
                   <div className="font-playfair text-3xl font-bold text-[#1a2456]">{stat.num}</div>
                   <div className="font-lato text-xs text-gray-600 uppercase tracking-widest mt-1">{stat.label}</div>
                 </div>
