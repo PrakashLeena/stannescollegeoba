@@ -23,6 +23,7 @@ export default async function AdminHome() {
             { href: '/admin/settings', label: 'Site Settings' },
             { href: '/admin/memberships', label: 'Membership Requests' },
             { href: '/admin/contacts', label: 'Contact Submissions' },
+            { href: '/admin/members', label: 'Members' },
           ].map((item) => (
             <Link
               key={item.href}

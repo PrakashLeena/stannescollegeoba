@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { EventsClient } from './EventsClient'
 
 export default function AdminEventsPage() {
   return (
@@ -10,9 +11,7 @@ export default function AdminEventsPage() {
             Back to Dashboard
           </Link>
         </div>
-        <div className="bg-white/10 border border-white/10 p-6 text-white/80">
-          This section is not implemented yet.
-        </div>
+        <EventsClient />
       </div>
     </main>
   )

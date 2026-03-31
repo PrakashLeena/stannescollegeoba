@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ProjectsClient } from './ProjectsClient'
 
 export default function AdminProjectsPage() {
   return (
@@ -10,9 +11,7 @@ export default function AdminProjectsPage() {
             Back to Dashboard
           </Link>
         </div>
-        <div className="bg-white/10 border border-white/10 p-6 text-white/80">
-          This section is not implemented yet.
-        </div>
+        <ProjectsClient />
       </div>
     </main>
   )
