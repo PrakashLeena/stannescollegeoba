@@ -37,14 +37,28 @@ export const authOptions: NextAuthOptions = {
         const email = credentials?.email?.toLowerCase().trim()
         const password = credentials?.password
 
-        if (!email || !password) return null
+        if (!email || !password) {
+          console.warn('[auth] missing email or password')
+          return null
+        }
 
         const db = await getDb()
         const user = await db.collection('users').findOne({ email })
-        if (!user?.passwordHash) return null
+        if (!user) {
+          console.warn('[auth] user not found', { email })
+          return null
+        }
+
+        if (!user?.passwordHash) {
+          console.warn('[auth] user missing passwordHash', { email })
+          return null
+        }
 
         const ok = await bcrypt.compare(password, user.passwordHash)
-        if (!ok) return null
+        if (!ok) {
+          console.warn('[auth] invalid password', { email })
+          return null
+        }
 
         return {
           id: user._id.toString(),
