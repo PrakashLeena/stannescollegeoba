@@ -1,5 +1,6 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { getApiBaseUrl } from '@/lib/apiBase'
 
 const stats = [
   { value: 500, suffix: '+', label: 'Active Members', desc: 'Alumni across NSW & ACT' },
@@ -44,6 +45,32 @@ function StatItem({ stat, started }: { stat: typeof stats[0]; started: boolean }
 export default function Stats() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [started, setStarted] = useState(false)
+  const [memberCount, setMemberCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      const base = getApiBaseUrl()
+      if (!base) return
+      try {
+        const res = await fetch(`${base}/api/public/members/count`, { cache: 'no-store' })
+        const json = await res.json()
+        if (!res.ok || !json.ok || typeof json.count !== 'number') return
+        if (!cancelled) setMemberCount(json.count)
+      } catch {
+        // ignore
+      }
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const resolvedStats = useMemo(() => {
+    if (memberCount === null) return stats
+    return [{ ...stats[0], value: memberCount }, ...stats.slice(1)]
+  }, [memberCount])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -85,7 +112,7 @@ export default function Stats() {
           </h2>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, idx) => (
+          {resolvedStats.map((stat, idx) => (
             <StatItem key={idx} stat={stat} started={started} />
           ))}
         </div>

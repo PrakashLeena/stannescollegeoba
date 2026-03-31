@@ -1,9 +1,11 @@
 'use client'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { getApiBaseUrl } from '@/lib/apiBase'
 
 export default function About() {
   const leftRef = useRef<HTMLDivElement>(null)
   const rightRef = useRef<HTMLDivElement>(null)
+  const [memberCount, setMemberCount] = useState<number | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -19,6 +21,26 @@ export default function About() {
     if (leftRef.current) observer.observe(leftRef.current)
     if (rightRef.current) observer.observe(rightRef.current)
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      const base = getApiBaseUrl()
+      if (!base) return
+      try {
+        const res = await fetch(`${base}/api/public/members/count`, { cache: 'no-store' })
+        const json = await res.json()
+        if (!res.ok || !json.ok || typeof json.count !== 'number') return
+        if (!cancelled) setMemberCount(json.count)
+      } catch {
+        // ignore
+      }
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   return (
@@ -68,7 +90,7 @@ export default function About() {
             {/* Key facts */}
             <div className="grid grid-cols-3 gap-4 mb-8">
               {[
-                { num: '500+', label: 'Members' },
+                { num: memberCount === null ? '500+' : `${memberCount}+`, label: 'Members' },
                 { num: '1997', label: 'Founded' },
                 { num: '20+', label: 'Events/Year' },
               ].map((stat) => (
