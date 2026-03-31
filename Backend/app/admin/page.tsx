@@ -16,6 +16,7 @@ export default async function AdminHome() {
         <div className="grid sm:grid-cols-2 gap-4">
           {[
             { href: '/admin/news', label: 'News' },
+            { href: '/admin/news-ticker', label: 'News Ticker' },
             { href: '/admin/events', label: 'Events' },
             { href: '/admin/projects', label: 'Projects' },
             { href: '/admin/gallery', label: 'Gallery' },

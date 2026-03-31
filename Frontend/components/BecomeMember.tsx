@@ -51,14 +51,14 @@ export default function BecomeMember() {
             <div className="w-8 h-[2px] bg-yellow-600" />
           </div>
           <h2 className="section-title">Become a Member</h2>
-          <p className="font-lato text-gray-700 mt-8 max-w-2xl mx-auto text-base leading-relaxed">
+          <p className="font-lato text-white mt-8 max-w-2xl mx-auto text-base leading-relaxed">
             Join St.Anne’s College Past Pupils’ Association to reconnect with old friends, grow your network, and support
             community projects and events.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          <div className="bg-white/90 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
+          <div className="bg-white/20 bg-opacity-70 shadow-lg p-8 border-l-4 border-yellow-500">
             <div className="font-playfair text-xl font-bold text-[#1a2456] mb-3">Why Join?</div>
             <ul className="space-y-2">
               {[
@@ -67,12 +67,12 @@ export default function BecomeMember() {
                 'Volunteer opportunities',
                 'Support scholarships & projects',
               ].map((t) => (
-                <li key={t} className="font-lato text-sm text-gray-700">{t}</li>
+                <li key={t} className="font-lato text-sm text-white">{t}</li>
               ))}
             </ul>
           </div>
 
-          <div className="bg-white/90 bg-transparent-50 shadow-sm p-8 border-l-4 border-yellow-500">
+          <div className="bg-white/20 bg-opacity-70 shadow-lg p-8 border-l-4 border-yellow-500">
             <div className="font-playfair text-xl font-bold text-[#1a2456] mb-3">How to Become a Member</div>
             <ol className="space-y-2 list-decimal pl-4">
               {[
@@ -80,12 +80,12 @@ export default function BecomeMember() {
                 'Verify your alumni details',
                 'Get confirmation from the committee',
               ].map((t) => (
-                <li key={t} className="font-lato text-sm text-gray-700">{t}</li>
+                <li key={t} className="font-lato text-sm text-white">{t}</li>
               ))}
             </ol>
           </div>
 
-          <div className="bg-[#1a2456] bg-transparent-50 text-white shadow-sm p-8">
+          <div className="bg-[#1a2456] bg-opacity-70 text-white shadow-lg p-8">
             <div className="font-playfair text-xl font-bold mb-3">Membership Request</div>
             <p className="font-lato text-sm text-white/80 leading-relaxed mb-6">
               Submit your details and we’ll get back to you.

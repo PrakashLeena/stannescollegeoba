@@ -40,7 +40,7 @@ export default function Contact() {
     <section id="contact" className="py-20 bg-transparent">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 ">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-8 h-[2px] bg-yellow-600" />
             <span className="text-yellow-600 font-lato text-sm tracking-widest uppercase font-bold">Get In Touch</span>
@@ -52,7 +52,7 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-10">
+        <div className="grid lg:grid-cols-3 gap-10 ">
           {/* Info Column */}
           <div className="space-y-6">
             {[
@@ -60,14 +60,14 @@ export default function Contact() {
               { icon: Phone, label: 'Call Us', value: '+94 2 XXXX XXXX', sub: 'Mon–Fri, 9AM–5PM AEST' },
               { icon: MapPin, label: 'Location', value: 'Vankalai, Mannar', sub: 'Serving NSW & ACT' },
             ].map(({ icon: Icon, label, value, sub }) => (
-              <div key={label} className="flex items-start gap-4 p-5 bg-white shadow-sm border-l-4 border-yellow-500">
+              <div key={label} className="flex items-start gap-4 p-5 bg-white bg-opacity-30 text-white shadow-sm border-l-4 border-yellow-500">
                 <div className="w-10 h-10 bg-[#1a2456] rounded-full flex items-center justify-center shrink-0">
                   <Icon size={18} className="text-yellow-400" />
                 </div>
                 <div>
-                  <div className="font-lato text-xs uppercase tracking-widest text-gray-400 mb-1">{label}</div>
+                  <div className="font-lato text-xs uppercase tracking-widest text-white mb-1">{label}</div>
                   <div className="font-playfair font-bold text-[#1a2456] text-base">{value}</div>
-                  <div className="font-lato text-gray-400 text-xs mt-1">{sub}</div>
+                  <div className="font-lato text-white text-xs mt-1">{sub}</div>
                 </div>
               </div>
             ))}
@@ -95,7 +95,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-2 bg-white shadow-md p-8">
+          <div className="lg:col-span-2 bg-white bg-opacity-30 text-white shadow-md p-8">
             <h3 className="font-playfair text-2xl font-bold text-[#1a2456] mb-6">Send Us a Message</h3>
 
             {submitted && (
@@ -113,46 +113,46 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block font-lato text-xs uppercase tracking-widest text-gray-500 mb-2">Full Name *</label>
+                  <label className="block font-lato text-xs uppercase tracking-widest text-white mb-2">Full Name *</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full border border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
+                    className="w-full border bg-gray-400 bg-opacity-30 border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
                     placeholder="Diron Temcious"
                   />
                 </div>
                 <div>
-                  <label className="block font-lato text-xs uppercase tracking-widest text-gray-500 mb-2">Email Address *</label>
+                  <label className="block font-lato text-xs uppercase tracking-widest white mb-2">Email Address *</label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full border border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
+                    className="w-full border bg-gray-400 bg-opacity-30 border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
                     placeholder="temci@email.com"
                   />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block font-lato text-xs uppercase tracking-widest text-gray-500 mb-2">Phone</label>
+                  <label className="block font-lato text-xs uppercase tracking-widest text-white mb-2">Phone</label>
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full border border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
+                    className="w-full border bg-gray-400 bg-opacity-30 border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200"
                     placeholder="+94 XX XXX XXX"
                   />
                 </div>
                 <div>
-                  <label className="block font-lato text-xs uppercase tracking-widest text-gray-500 mb-2">Subject *</label>
+                  <label className="block font-lato text-xs uppercase tracking-widest text-white mb-2">Subject *</label>
                   <select
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full border border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200 bg-white text-black-600"
+                    className="w-full border bg-gray-400 bg-opacity-50 border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200  text-white"
                   >
                     <option value="">Select subject</option>
                     <option>Membership Enquiry</option>
@@ -163,13 +163,13 @@ export default function Contact() {
                 </div>
               </div>
               <div>
-                <label className="block font-lato text-xs uppercase tracking-widest text-gray-500 mb-2">Message *</label>
+                <label className="block font-lato text-xs uppercase tracking-widest text-white mb-2">Message *</label>
                 <textarea
                   required
                   rows={5}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full border border-gray-200 px-4 py-3 font-lato text-sm focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200 resize-none"
+                  className="w-full border bg-gray-400 bg-opacity-30 border-gray-200 px-4 py-3 font-lato text-sm text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors duration-200 resize-none"
                   placeholder="How can we help you?"
                 />
               </div>
