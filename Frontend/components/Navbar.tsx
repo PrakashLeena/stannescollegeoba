@@ -11,7 +11,7 @@ const navItems = [
     children: [
       { label: 'Who We Are', href: '#about' },
       { label: 'Committee', href: '#committee' },
-      { label: 'History', href: '#history' },
+      { label: 'History', href: '/history' },
       { label: 'Internal Structure', href: '/internal-committee-structure' },
     ],
   },
