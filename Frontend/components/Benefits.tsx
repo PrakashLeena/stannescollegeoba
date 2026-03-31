@@ -70,7 +70,7 @@ export default function Benefits() {
           </div>
           <h2 className="section-title">Member Benefits</h2>
           <p className="font-lato text-gray-500 mt-8 max-w-xl mx-auto text-base leading-relaxed">
-            Joining ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION provides a unique opportunity to reconnect with fellow
+            Joining St.Anne’s College Past Pupils’ Association provides a unique opportunity to reconnect with fellow
             alumni and contribute to the growth and success of our alma mater and community.
           </p>
         </div>

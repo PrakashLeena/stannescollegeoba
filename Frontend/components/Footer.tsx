@@ -33,14 +33,14 @@ export default function Footer() {
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-yellow-400 overflow-hidden">
                 <Image
                   src="/src/images/logo-removebg.png"
-                  alt="ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION IN NSW & ACT"
+                  alt="St.Anne’s College Past Pupils’ Association"
                   width={44}
                   height={44}
                   className="object-contain"
                 />
               </div>
               <div>
-                <div className="nav-brand text-white font-bold text-sm leading-tight">ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION</div>
+                <div className="nav-brand text-white font-bold text-sm leading-tight">St.Anne’s College Past Pupils’ Association</div>
                 <div className="nav-brand text-yellow-400 text-xs tracking-widest uppercase">IN NSW & ACT</div>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="font-lato text-gray-500 text-xs text-center sm:text-left">
-            © {new Date().getFullYear()} ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION IN NSW & ACT. All rights reserved.
+            © {new Date().getFullYear()} St.Anne’s College Past Pupils’ Association. All rights reserved.
           </p>
           <div className="flex gap-5">
             {['Privacy Policy', 'Terms of Use', 'Sitemap'].map((item) => (

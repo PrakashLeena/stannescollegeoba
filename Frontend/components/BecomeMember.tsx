@@ -52,7 +52,7 @@ export default function BecomeMember() {
           </div>
           <h2 className="section-title">Become a Member</h2>
           <p className="font-lato text-gray-700 mt-8 max-w-2xl mx-auto text-base leading-relaxed">
-            Join ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION to reconnect with old friends, grow your network, and support
+            Join St.Anne’s College Past Pupils’ Association to reconnect with old friends, grow your network, and support
             community projects and events.
           </p>
         </div>

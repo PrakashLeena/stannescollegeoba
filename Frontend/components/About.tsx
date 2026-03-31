@@ -54,7 +54,7 @@ export default function About() {
             </h2>
             <div className="gold-divider" style={{ margin: '0 0 24px 0' }} />
             <p className="font-lato text-gray-700 text-base leading-relaxed mb-5">
-              ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION is a respected alumni community bringing together graduates from
+              St.Anne’s College Past Pupils’ Association is a respected alumni community bringing together graduates from
               our alma mater. With a history spanning nearly three decades, we embody a spirit of
               camaraderie and service among our members.
             </p>

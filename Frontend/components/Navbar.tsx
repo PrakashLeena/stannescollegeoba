@@ -81,7 +81,7 @@ export default function Navbar() {
             <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-yellow-400 overflow-hidden group-hover:scale-105 transition-transform duration-300">
               <Image
                 src="/src/images/logo-removebg.png"
-                alt="ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION IN NSW & ACT"
+                alt="St.Anne’s College Past Pupils’ Association"
                 width={44}
                 height={44}
                 className="object-contain"
@@ -90,7 +90,7 @@ export default function Navbar() {
             </div>
             <div className="block max-w-[220px] sm:max-w-none min-w-0">
               <div className="nav-brand text-white font-bold text-sm sm:text-sm md:text-base leading-tight tracking-wide">
-                ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION
+                St.Anne’s College Past Pupils’ Association
               </div>
               <div className="nav-brand text-yellow-400 text-xs sm:text-sm md:text-base tracking-widest uppercase">
                 IN NSW & ACT

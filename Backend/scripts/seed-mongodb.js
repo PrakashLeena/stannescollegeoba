@@ -89,8 +89,8 @@ async function main() {
     { _id: 'default' },
     {
       $setOnInsert: {
-        siteName: "ST.ANNE'S COLLEGE OLD BOYS ASSOCIATION",
-        siteTagline: 'IN NSW & ACT',
+        siteName: 'St.Anne’s College Past Pupils’ Association',
+        siteTagline: '',
         email: 'stannesppa.official@gmail.com',
         phone: '+94',
         address: 'Vankalai, Mannar, Sri Lanka',
