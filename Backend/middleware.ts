@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (pathname.startsWith('/admin')) {
-    const token = await getToken({ req })
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     if (!token) {
       const url = req.nextUrl.clone()
       url.pathname = '/admin/login'
