@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { authOptions } from '@/lib/auth'
 import { getDb } from '@/lib/mongodb'
+import { MembershipActions } from './MembershipActions'
 
 export const runtime = 'nodejs'
 
@@ -37,6 +38,7 @@ export default async function AdminMembershipsPage() {
                 <th className="px-4 py-3">Year Left</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Created</th>
+                <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -48,11 +50,14 @@ export default async function AdminMembershipsPage() {
                   <td className="px-4 py-3">{r.yearLeft || ''}</td>
                   <td className="px-4 py-3">{r.status || ''}</td>
                   <td className="px-4 py-3">{r.createdAt ? new Date(r.createdAt).toLocaleString() : ''}</td>
+                  <td className="px-4 py-3">
+                    <MembershipActions id={String(r._id)} />
+                  </td>
                 </tr>
               ))}
               {requests.length === 0 && (
                 <tr>
-                  <td className="px-4 py-6 text-white/70" colSpan={6}>
+                  <td className="px-4 py-6 text-white/70" colSpan={7}>
                     No membership requests found.
                   </td>
                 </tr>
