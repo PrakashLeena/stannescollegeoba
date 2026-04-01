@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: "St.Anne’s College Past Pupils’ Association",
   description: "St.Anne’s College Past Pupils’ Association — a vibrant alumni community reconnecting, reminiscing, and forging new bonds while serving the community.",
+  verification: {
+    google: 'D8hml7ROUnx4LXupBE4eoIjZS4X9Y07yzsbqeP-HmsI',
+  },
   keywords: [
     "st.anne's college past pupils' association",
     "st.anne's college ppa",
