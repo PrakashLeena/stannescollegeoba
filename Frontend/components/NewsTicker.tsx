@@ -4,12 +4,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { getApiBaseUrl } from '@/lib/apiBase'
 
 const newsItems = [
-  '🏆 RCOBA Annual Gala Dinner — Save the Date: 15th November 2025',
-  '🎓 Scholarship Applications Open — Apply Before 30th September',
-  '🏉 Touch Footy Tournament — Registration Open Now',
-  '🎾 Tennis Social Evening — Every Friday from 6PM',
-  '❤️ LRH Medical Project — Goal Exceeded: AUD 8,000+ Raised',
-  '📢 New Member Orientation — 1st Saturday of Every Month',
+  '🏆 SACPPA Annual Dinner — Save the Date: 15th November 2026',
+  '🎓 GCE A/L Applications Open — Apply Before 30th September',
+  '📚 GCE A/L Results Relesed',
+  '👟 Athletic Practise — Everyday from 6AM',
+  '📢 SACPPA Meeting April 1st',
 ]
 
 type ApiTickerItem = {
