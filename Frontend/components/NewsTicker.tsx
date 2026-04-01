@@ -5,7 +5,7 @@ import { getApiBaseUrl } from '@/lib/apiBase'
 
 const newsItems = [
   '🏆 SACPPA Annual Dinner — Save the Date: 15th November 2026',
-  '🎓 GCE A/L Applications Open — Apply Before 30th September',
+  '🎓 GCE A/L Applications(2026) Open — Apply Before 30th September',
   '📚 GCE A/L Results Relesed',
   '👟 Athletic Practise — Everyday from 6AM',
   '📢 SACPPA Meeting April 1st',
