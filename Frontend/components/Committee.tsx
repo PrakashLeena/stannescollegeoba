@@ -95,7 +95,7 @@ export default function Committee() {
                   <Linkedin size={14} className="text-white" />
                 </a>
               </div>
-              <h3 className="font-playfair font-bold text-[#1a2456] text-lg mb-1">{member.name}</h3>
+              <h3 className="font-playfair font-bold text-blue-300 text-lg mb-1">{member.name}</h3>
               <div className="text-yellow-600 font-lato text-sm font-bold uppercase tracking-widest mb-1">{member.role}</div>
               <div className="text-gray-400 font-lato text-xs">{member.bio || ''}</div>
             </div>
