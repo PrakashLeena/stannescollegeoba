@@ -19,6 +19,7 @@ const navItems = [
     label: 'Get Involved', href: '#become-member',
     children: [
       { label: 'Photos', href: '#gallery' },
+      { label: 'Members', href: '/members' },
       { label: 'Become Member', href: '#become-member' },
     ],
   },
