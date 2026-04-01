@@ -12,21 +12,34 @@ type ApiCommitteeMember = {
 }
 
 export default function Committee() {
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLElement | null>(null)
   const [committee, setCommittee] = useState<ApiCommitteeMember[]>([])
+
+  function reveal() {
+    const root = sectionRef.current
+    if (!root) return
+    root.querySelectorAll('.anim-hidden').forEach((el, i) => {
+      setTimeout(() => el.classList.add('anim-visible'), i * 120)
+    })
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('anim-visible')
+          if (entry.isIntersecting) reveal()
         })
       },
       { threshold: 0.1 }
     )
-    cardRefs.current.forEach((ref) => { if (ref) observer.observe(ref) })
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (committee.length === 0) return
+    reveal()
+  }, [committee.length])
 
   useEffect(() => {
     const base = getApiBaseUrl()
@@ -43,7 +56,7 @@ export default function Committee() {
   }, [])
 
   return (
-    <section id="committee" className="py-20 bg-transparent">
+    <section id="committee" className="py-20 bg-transparent" ref={sectionRef as any}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -62,7 +75,6 @@ export default function Committee() {
           {committee.map((member, idx) => (
             <div
               key={member._id || `${member.name}-${idx}`}
-              ref={(el) => { cardRefs.current[idx] = el }}
               className="anim-hidden card-hover text-center group"
               style={{ transitionDelay: `${idx * 100}ms` }}
             >

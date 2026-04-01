@@ -14,25 +14,34 @@ type ApiNewsItem = {
 }
 
 export default function News() {
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLElement | null>(null)
   const [items, setItems] = useState<ApiNewsItem[]>([])
+
+  function reveal() {
+    const root = sectionRef.current
+    if (!root) return
+    root.querySelectorAll('.anim-hidden').forEach((el, i) => {
+      setTimeout(() => el.classList.add('anim-visible'), i * 120)
+    })
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('anim-visible')
-          }
+          if (entry.isIntersecting) reveal()
         })
       },
       { threshold: 0.1 }
     )
-    cardRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref)
-    })
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (items.length === 0) return
+    reveal()
+  }, [items.length])
 
   useEffect(() => {
     const base = getApiBaseUrl()
@@ -49,7 +58,7 @@ export default function News() {
   }, [])
 
   return (
-    <section id="news" className="py-20 bg-transparent">
+    <section id="news" className="py-20 bg-transparent" ref={sectionRef as any}>
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
@@ -67,7 +76,6 @@ export default function News() {
           {items.map((item, idx) => (
             <div
               key={item._id || item.slug || idx}
-              ref={(el) => { cardRefs.current[idx] = el }}
               className="anim-hidden card-hover bg-white shadow-md group overflow-hidden"
               style={{ transitionDelay: `${idx * 120}ms` }}
             >
