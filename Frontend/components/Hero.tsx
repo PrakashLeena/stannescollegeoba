@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 const slides = [
   {
     image: '/src/images/home%20page%20image%20slider/WhatsApp%20Image%202026-03-30%20at%2012.44.56.jpeg',
-    title: 'WELCOME TO St.Anne’s College Past Pupils’ Association',
+    title: 'WELCOME TO ST.ANNE\'S PAST PUPILS\' ASSOCIATION',
     subtitle: 'Reconnect. Reminisce. Forge New Bonds.',
     desc: 'A vibrant community of alumni united by shared memories, common values, and a commitment to giving back.',
   },
