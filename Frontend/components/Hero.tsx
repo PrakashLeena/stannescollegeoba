@@ -65,6 +65,7 @@ export default function Hero() {
   }
 
   return (
+    
     <section id="home" className="relative h-[100svh] md:h-screen min-h-[600px] overflow-hidden">
       {/* Slides */}
       {slides.map((slide, idx) => (
