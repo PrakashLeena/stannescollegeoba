@@ -8,6 +8,7 @@ export const runtime = 'nodejs'
 const schema = z.object({
   title: z.string().min(1).max(200),
   slug: z.string().min(1).max(200),
+  section: z.enum(['activities', 'upcoming']).optional(),
   description: z.string().max(20000).optional().or(z.literal('')),
   location: z.string().max(200).optional().or(z.literal('')),
   startDate: z.string().optional().or(z.literal('')),
@@ -28,6 +29,7 @@ export async function GET() {
           projection: {
             title: 1,
             slug: 1,
+            section: 1,
             location: 1,
             startDate: 1,
             endDate: 1,
@@ -59,6 +61,7 @@ export async function POST(req: Request) {
     const doc = {
       title: data.title,
       slug: data.slug,
+      section: data.section || 'activities',
       description: data.description || null,
       location: data.location || null,
       startDate: data.startDate ? new Date(data.startDate) : null,

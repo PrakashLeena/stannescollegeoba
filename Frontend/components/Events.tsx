@@ -17,7 +17,8 @@ type ApiEvent = {
 
 export default function Events() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const [items, setItems] = useState<ApiEvent[]>([])
+  const [activities, setActivities] = useState<ApiEvent[]>([])
+  const [upcoming, setUpcoming] = useState<ApiEvent[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,11 +41,20 @@ export default function Events() {
     const base = getApiBaseUrl()
     if (!base) return
 
-    fetch(`${base}/api/public/events`, { cache: 'no-store' })
+    fetch(`${base}/api/public/events?section=activities`, { cache: 'no-store' })
       .then((r) => r.json())
       .then((j) => {
         if (j?.ok && Array.isArray(j.items)) {
-          setItems(j.items)
+          setActivities(j.items)
+        }
+      })
+      .catch(() => {})
+
+    fetch(`${base}/api/public/events?section=upcoming`, { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((j) => {
+        if (j?.ok && Array.isArray(j.items)) {
+          setUpcoming(j.items)
         }
       })
       .catch(() => {})
@@ -67,7 +77,7 @@ export default function Events() {
 
         {/* Sports Cards */}
         <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {items.slice(0, 6).map((item, idx) => (
+          {activities.slice(0, 6).map((item, idx) => (
             <Link
               key={item._id || item.slug || idx}
               href={`/events/${item.slug}`}
@@ -104,7 +114,7 @@ export default function Events() {
             Upcoming Events
           </h3>
           <div className="space-y-4">
-            {items.slice(0, 6).map((event, idx) => (
+            {upcoming.slice(0, 6).map((event, idx) => (
               <div
                 key={event._id || event.slug || idx}
                 className="anim-hidden bg-white/5 hover:bg-white/10 transition-colors duration-300 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-5"

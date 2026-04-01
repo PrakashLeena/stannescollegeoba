@@ -6,6 +6,7 @@ type EventItem = {
   _id: string
   title: string
   slug: string
+  section?: 'activities' | 'upcoming'
   location?: string | null
   startDate?: string | null
   endDate?: string | null
@@ -32,6 +33,7 @@ export function EventsClient() {
 
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
+  const [section, setSection] = useState<'activities' | 'upcoming'>('activities')
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [startDate, setStartDate] = useState('')
@@ -65,6 +67,7 @@ export function EventsClient() {
     setEditingId(null)
     setTitle('')
     setSlug('')
+    setSection('activities')
     setDescription('')
     setLocation('')
     setStartDate('')
@@ -85,6 +88,7 @@ export function EventsClient() {
       setEditingId(id)
       setTitle(it.title || '')
       setSlug(it.slug || '')
+      setSection(it.section === 'upcoming' ? 'upcoming' : 'activities')
       setDescription(it.description || '')
       setLocation(it.location || '')
       setStartDate(it.startDate ? new Date(it.startDate).toISOString().slice(0, 16) : '')
@@ -112,6 +116,7 @@ export function EventsClient() {
       const payload = {
         title: title.trim(),
         slug: slug.trim(),
+        section,
         description,
         location,
         startDate,
@@ -180,6 +185,17 @@ export function EventsClient() {
             <label className="block text-white/80 text-sm mb-1">Slug</label>
             <input value={slug} onChange={(e) => setSlug(e.target.value)} className="w-full px-3 py-2 bg-black/20 border border-white/10 text-white outline-none" />
           </div>
+          <div>
+            <label className="block text-white/80 text-sm mb-1">Section</label>
+            <select
+              value={section}
+              onChange={(e) => setSection((e.target.value as any) || 'activities')}
+              className="w-full px-3 py-2 bg-black/20 border border-white/10 text-white outline-none"
+            >
+              <option value="activities">Community Activities</option>
+              <option value="upcoming">Upcoming Events</option>
+            </select>
+          </div>
           <div className="sm:col-span-2">
             <label className="block text-white/80 text-sm mb-1">Description</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} className="w-full px-3 py-2 bg-black/20 border border-white/10 text-white outline-none" rows={5} />
@@ -240,6 +256,7 @@ export function EventsClient() {
                 <tr>
                   <th className="px-4 py-3">Title</th>
                   <th className="px-4 py-3">Slug</th>
+                  <th className="px-4 py-3">Section</th>
                   <th className="px-4 py-3">Published</th>
                   <th className="px-4 py-3">Actions</th>
                 </tr>
@@ -249,6 +266,7 @@ export function EventsClient() {
                   <tr key={it._id} className="border-t border-white/10">
                     <td className="px-4 py-3">{it.title}</td>
                     <td className="px-4 py-3">{it.slug}</td>
+                    <td className="px-4 py-3">{it.section === 'upcoming' ? 'Upcoming' : 'Activities'}</td>
                     <td className="px-4 py-3">{it.isPublished ? 'Yes' : 'No'}</td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-2">

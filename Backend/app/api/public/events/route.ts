@@ -12,10 +12,14 @@ export async function GET(req: Request) {
   try {
     const db = await getDb()
 
+    const { searchParams } = new URL(req.url)
+    const section = searchParams.get('section')
+    const sectionFilter = section === 'activities' || section === 'upcoming' ? section : null
+
     const items = await db
       .collection('events')
       .find(
-        { isPublished: true },
+        { isPublished: true, ...(sectionFilter ? { section: sectionFilter } : {}) },
         { projection: { title: 1, slug: 1, description: 1, location: 1, startDate: 1, endDate: 1, imageUrl: 1, createdAt: 1 } }
       )
       .sort({ startDate: -1, createdAt: -1 })
