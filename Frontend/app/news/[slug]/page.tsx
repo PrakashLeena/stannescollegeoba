@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -13,14 +14,52 @@ type ApiNewsItem = {
   publishedAt?: string | null
 }
 
-export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
+async function getItem(slug: string): Promise<ApiNewsItem | null> {
   const base = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/+$/, '')
-  if (!base) return notFound()
+  if (!base) return null
 
-  const res = await fetch(`${base}/api/public/news/${params.slug}`, { cache: 'no-store' })
-  if (!res.ok) return notFound()
+  const res = await fetch(`${base}/api/public/news/${slug}`, { cache: 'no-store' })
+  if (!res.ok) return null
   const json = await res.json()
-  const item: ApiNewsItem | null = json?.ok ? json.item : null
+  return json?.ok ? (json.item as ApiNewsItem) : null
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const item = await getItem(params.slug)
+  if (!item) {
+    return {
+      title: 'News',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const desc = (item.excerpt || item.content || '').slice(0, 160)
+  const title = `${item.title} | St.Anne’s College Past Pupils’ Association`
+
+  return {
+    title,
+    description: desc,
+    alternates: {
+      canonical: `/news/${item.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      title,
+      description: desc,
+      url: `/news/${item.slug}`,
+      images: item.imageUrl ? [{ url: item.imageUrl }] : undefined,
+    },
+    twitter: {
+      card: item.imageUrl ? 'summary_large_image' : 'summary',
+      title,
+      description: desc,
+      images: item.imageUrl ? [item.imageUrl] : undefined,
+    },
+  }
+}
+
+export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
+  const item = await getItem(params.slug)
   if (!item) return notFound()
 
   return (

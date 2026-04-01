@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -14,14 +15,52 @@ type ApiEvent = {
   imageUrl?: string | null
 }
 
-export default async function EventDetailPage({ params }: { params: { slug: string } }) {
+async function getItem(slug: string): Promise<ApiEvent | null> {
   const base = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/+$/, '')
-  if (!base) return notFound()
+  if (!base) return null
 
-  const res = await fetch(`${base}/api/public/events/${params.slug}`, { cache: 'no-store' })
-  if (!res.ok) return notFound()
+  const res = await fetch(`${base}/api/public/events/${slug}`, { cache: 'no-store' })
+  if (!res.ok) return null
   const json = await res.json()
-  const event: ApiEvent | null = json?.ok ? json.item : null
+  return json?.ok ? (json.item as ApiEvent) : null
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const event = await getItem(params.slug)
+  if (!event) {
+    return {
+      title: 'Events',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const desc = (event.description || '').slice(0, 160)
+  const title = `${event.title} | St.Anne’s College Past Pupils’ Association`
+
+  return {
+    title,
+    description: desc,
+    alternates: {
+      canonical: `/events/${event.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      title,
+      description: desc,
+      url: `/events/${event.slug}`,
+      images: event.imageUrl ? [{ url: event.imageUrl }] : undefined,
+    },
+    twitter: {
+      card: event.imageUrl ? 'summary_large_image' : 'summary',
+      title,
+      description: desc,
+      images: event.imageUrl ? [event.imageUrl] : undefined,
+    },
+  }
+}
+
+export default async function EventDetailPage({ params }: { params: { slug: string } }) {
+  const event = await getItem(params.slug)
   if (!event) return notFound()
 
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import Navbar from '@/components/Navbar'
@@ -12,14 +13,52 @@ type ApiProject = {
   imageUrl?: string | null
 }
 
-export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
+async function getItem(slug: string): Promise<ApiProject | null> {
   const base = (process.env.NEXT_PUBLIC_API_BASE_URL || '').replace(/\/+$/, '')
-  if (!base) return notFound()
+  if (!base) return null
 
-  const res = await fetch(`${base}/api/public/projects/${params.slug}`, { cache: 'no-store' })
-  if (!res.ok) return notFound()
+  const res = await fetch(`${base}/api/public/projects/${slug}`, { cache: 'no-store' })
+  if (!res.ok) return null
   const json = await res.json()
-  const project: ApiProject | null = json?.ok ? json.item : null
+  return json?.ok ? (json.item as ApiProject) : null
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const project = await getItem(params.slug)
+  if (!project) {
+    return {
+      title: 'Projects',
+      robots: { index: false, follow: false },
+    }
+  }
+
+  const desc = (project.summary || project.content || '').slice(0, 160)
+  const title = `${project.title} | St.Anne’s College Past Pupils’ Association`
+
+  return {
+    title,
+    description: desc,
+    alternates: {
+      canonical: `/projects/${project.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      title,
+      description: desc,
+      url: `/projects/${project.slug}`,
+      images: project.imageUrl ? [{ url: project.imageUrl }] : undefined,
+    },
+    twitter: {
+      card: project.imageUrl ? 'summary_large_image' : 'summary',
+      title,
+      description: desc,
+      images: project.imageUrl ? [project.imageUrl] : undefined,
+    },
+  }
+}
+
+export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
+  const project = await getItem(params.slug)
   if (!project) return notFound()
 
   return (
