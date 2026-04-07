@@ -56,7 +56,7 @@ export default function Contact() {
           {/* Info Column */}
           <div className="space-y-6">
             {[
-              { icon: Mail, label: 'Email Us', value: 'info@pastpeople.org', sub: 'We reply within 24 hours' },
+              { icon: Mail, label: 'Email Us', value: 'stannesppa.official@gmail.com', sub: 'We reply within 24 hours' },
               { icon: Phone, label: 'Call Us', value: '+94 2 XXXX XXXX', sub: 'Mon–Fri, 9AM–5PM AEST' },
               { icon: MapPin, label: 'Location', value: 'Vankalai, Mannar', sub: 'Serving NSW & ACT' },
             ].map(({ icon: Icon, label, value, sub }) => (
